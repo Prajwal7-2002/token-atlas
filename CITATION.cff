@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use TokenAtlas in your research, benchmarks, or software, please cite it as below."
+authors:
+  - family-names: "Pujari"
+    given-names: "Prajwal"
+    orcid: "https://orcid.org/0009-0000-0000-0000"
+title: "TokenAtlas: Universal Multilingual Tokenizer Benchmark & Global Inflation Atlas"
+version: 0.1.0
+date-released: 2026-11-08
+url: "https://github.com/Prajwal7-2002/token-atlas"
+license: Apache-2.0
+keywords:
+  - natural-language-processing
+  - tokenization
+  - byte-pair-encoding
+  - multilingual
+  - llm-inference
+  - machine-learning

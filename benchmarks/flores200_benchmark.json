@@ -1,0 +1,280 @@
+{
+  "timestamp": "2026-11-08T05:01:56.756686+00:00",
+  "corpora_source": "Meta FLORES-200 Parallel Corpus (Curated Subset)",
+  "tokenizers": [
+    "gpt-4o",
+    "gpt-4"
+  ],
+  "languages": [
+    "en",
+    "de",
+    "fr",
+    "es",
+    "ru",
+    "ar",
+    "hi",
+    "kn",
+    "zh",
+    "ja"
+  ],
+  "results": [
+    {
+      "tokenizer_id": "gpt-4o",
+      "tokenizer_name": "OpenAI GPT-4o (o200k_base)",
+      "vocab_size": 200000,
+      "context_window": 128000,
+      "sample_count": 5,
+      "metrics": {
+        "en": {
+          "language_code": "en",
+          "language_name": "English",
+          "family": "Germanic",
+          "token_count": 85,
+          "char_count": 569,
+          "byte_count": 569,
+          "bytes_per_token": 6.694,
+          "inflation_index": 1.0,
+          "effective_context": 128000,
+          "cost_multiplier": 1.0
+        },
+        "de": {
+          "language_code": "de",
+          "language_name": "German",
+          "family": "Germanic",
+          "token_count": 144,
+          "char_count": 659,
+          "byte_count": 672,
+          "bytes_per_token": 4.667,
+          "inflation_index": 1.694,
+          "effective_context": 75561,
+          "cost_multiplier": 1.694
+        },
+        "fr": {
+          "language_code": "fr",
+          "language_name": "French",
+          "family": "Romance",
+          "token_count": 146,
+          "char_count": 731,
+          "byte_count": 753,
+          "bytes_per_token": 5.158,
+          "inflation_index": 1.718,
+          "effective_context": 74505,
+          "cost_multiplier": 1.718
+        },
+        "es": {
+          "language_code": "es",
+          "language_name": "Spanish",
+          "family": "Romance",
+          "token_count": 128,
+          "char_count": 704,
+          "byte_count": 715,
+          "bytes_per_token": 5.586,
+          "inflation_index": 1.506,
+          "effective_context": 84993,
+          "cost_multiplier": 1.506
+        },
+        "ru": {
+          "language_code": "ru",
+          "language_name": "Russian",
+          "family": "Slavic",
+          "token_count": 143,
+          "char_count": 672,
+          "byte_count": 1269,
+          "bytes_per_token": 8.874,
+          "inflation_index": 1.682,
+          "effective_context": 76100,
+          "cost_multiplier": 1.682
+        },
+        "ar": {
+          "language_code": "ar",
+          "language_name": "Arabic",
+          "family": "Semitic",
+          "token_count": 142,
+          "char_count": 486,
+          "byte_count": 900,
+          "bytes_per_token": 6.338,
+          "inflation_index": 1.671,
+          "effective_context": 76601,
+          "cost_multiplier": 1.671
+        },
+        "hi": {
+          "language_code": "hi",
+          "language_name": "Hindi",
+          "family": "Indo-Aryan",
+          "token_count": 182,
+          "char_count": 558,
+          "byte_count": 1496,
+          "bytes_per_token": 8.22,
+          "inflation_index": 2.141,
+          "effective_context": 59785,
+          "cost_multiplier": 2.141
+        },
+        "kn": {
+          "language_code": "kn",
+          "language_name": "Kannada",
+          "family": "Dravidian",
+          "token_count": 230,
+          "char_count": 605,
+          "byte_count": 1687,
+          "bytes_per_token": 7.335,
+          "inflation_index": 2.706,
+          "effective_context": 47302,
+          "cost_multiplier": 2.706
+        },
+        "zh": {
+          "language_code": "zh",
+          "language_name": "Chinese (Simplified)",
+          "family": "Sinitic",
+          "token_count": 117,
+          "char_count": 154,
+          "byte_count": 462,
+          "bytes_per_token": 3.949,
+          "inflation_index": 1.376,
+          "effective_context": 93023,
+          "cost_multiplier": 1.376
+        },
+        "ja": {
+          "language_code": "ja",
+          "language_name": "Japanese",
+          "family": "Japonic",
+          "token_count": 201,
+          "char_count": 264,
+          "byte_count": 792,
+          "bytes_per_token": 3.94,
+          "inflation_index": 2.365,
+          "effective_context": 54123,
+          "cost_multiplier": 2.365
+        }
+      }
+    },
+    {
+      "tokenizer_id": "gpt-4",
+      "tokenizer_name": "OpenAI GPT-4 (cl100k_base)",
+      "vocab_size": 100277,
+      "context_window": 128000,
+      "sample_count": 5,
+      "metrics": {
+        "en": {
+          "language_code": "en",
+          "language_name": "English",
+          "family": "Germanic",
+          "token_count": 86,
+          "char_count": 569,
+          "byte_count": 569,
+          "bytes_per_token": 6.616,
+          "inflation_index": 1.0,
+          "effective_context": 128000,
+          "cost_multiplier": 1.0
+        },
+        "de": {
+          "language_code": "de",
+          "language_name": "German",
+          "family": "Germanic",
+          "token_count": 176,
+          "char_count": 659,
+          "byte_count": 672,
+          "bytes_per_token": 3.818,
+          "inflation_index": 2.047,
+          "effective_context": 62531,
+          "cost_multiplier": 2.047
+        },
+        "fr": {
+          "language_code": "fr",
+          "language_name": "French",
+          "family": "Romance",
+          "token_count": 184,
+          "char_count": 731,
+          "byte_count": 753,
+          "bytes_per_token": 4.092,
+          "inflation_index": 2.14,
+          "effective_context": 59813,
+          "cost_multiplier": 2.14
+        },
+        "es": {
+          "language_code": "es",
+          "language_name": "Spanish",
+          "family": "Romance",
+          "token_count": 156,
+          "char_count": 704,
+          "byte_count": 715,
+          "bytes_per_token": 4.583,
+          "inflation_index": 1.814,
+          "effective_context": 70562,
+          "cost_multiplier": 1.814
+        },
+        "ru": {
+          "language_code": "ru",
+          "language_name": "Russian",
+          "family": "Slavic",
+          "token_count": 290,
+          "char_count": 672,
+          "byte_count": 1269,
+          "bytes_per_token": 4.376,
+          "inflation_index": 3.372,
+          "effective_context": 37960,
+          "cost_multiplier": 3.372
+        },
+        "ar": {
+          "language_code": "ar",
+          "language_name": "Arabic",
+          "family": "Semitic",
+          "token_count": 342,
+          "char_count": 486,
+          "byte_count": 900,
+          "bytes_per_token": 2.632,
+          "inflation_index": 3.977,
+          "effective_context": 32185,
+          "cost_multiplier": 3.977
+        },
+        "hi": {
+          "language_code": "hi",
+          "language_name": "Hindi",
+          "family": "Indo-Aryan",
+          "token_count": 570,
+          "char_count": 558,
+          "byte_count": 1496,
+          "bytes_per_token": 2.625,
+          "inflation_index": 6.628,
+          "effective_context": 19312,
+          "cost_multiplier": 6.628
+        },
+        "kn": {
+          "language_code": "kn",
+          "language_name": "Kannada",
+          "family": "Dravidian",
+          "token_count": 1086,
+          "char_count": 605,
+          "byte_count": 1687,
+          "bytes_per_token": 1.553,
+          "inflation_index": 12.628,
+          "effective_context": 10136,
+          "cost_multiplier": 12.628
+        },
+        "zh": {
+          "language_code": "zh",
+          "language_name": "Chinese (Simplified)",
+          "family": "Sinitic",
+          "token_count": 170,
+          "char_count": 154,
+          "byte_count": 462,
+          "bytes_per_token": 2.718,
+          "inflation_index": 1.977,
+          "effective_context": 64745,
+          "cost_multiplier": 1.977
+        },
+        "ja": {
+          "language_code": "ja",
+          "language_name": "Japanese",
+          "family": "Japonic",
+          "token_count": 287,
+          "char_count": 264,
+          "byte_count": 792,
+          "bytes_per_token": 2.76,
+          "inflation_index": 3.337,
+          "effective_context": 38358,
+          "cost_multiplier": 3.337
+        }
+      }
+    }
+  ]
+}
