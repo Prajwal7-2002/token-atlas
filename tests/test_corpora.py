@@ -7,8 +7,15 @@ from token_atlas.corpora import (
 
 
 def test_supported_languages_coverage():
-    expected_codes = {"en", "de", "fr", "es", "ru", "ar", "hi", "kn", "zh", "ja"}
-    assert set(SUPPORTED_LANGUAGES.keys()) == expected_codes
+    assert len(SUPPORTED_LANGUAGES) == 52
+    assert "en" in SUPPORTED_LANGUAGES
+    assert "kn" in SUPPORTED_LANGUAGES
+    assert "zh" in SUPPORTED_LANGUAGES
+    assert "zh-tw" in SUPPORTED_LANGUAGES
+    assert "am" in SUPPORTED_LANGUAGES
+    assert "yo" in SUPPORTED_LANGUAGES
+    assert "si" in SUPPORTED_LANGUAGES
+    assert "ne" in SUPPORTED_LANGUAGES
 
 
 def test_parallel_corpus_integrity():

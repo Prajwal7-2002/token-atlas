@@ -60,7 +60,10 @@ class TransformersAdapter:
     """Adapter for Hugging Face AutoTokenizer (fetches only metadata files ~2MB, zero weights)."""
     def __init__(self, model_id: str):
         from transformers import AutoTokenizer
-        self.tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
+        kwargs: dict[str, Any] = {"trust_remote_code": True}
+        if "Mistral-Nemo" in model_id:
+            kwargs["fix_mistral_regex"] = True
+        self.tokenizer = AutoTokenizer.from_pretrained(model_id, **kwargs)
 
     def encode(self, text: str) -> list[int]:
         return self.tokenizer.encode(text, add_special_tokens=False)
@@ -94,13 +97,29 @@ DEFAULT_SPECS: dict[str, TokenizerSpec] = {
         backend="transformers",
         hf_path="Qwen/Qwen2.5-7B",
     ),
+    "deepseek-v3": TokenizerSpec(
+        id="deepseek-v3",
+        name="DeepSeek-V3 (128k Vocab)",
+        vocab_size=128815,
+        context_window=128000,
+        backend="transformers",
+        hf_path="deepseek-ai/DeepSeek-V3",
+    ),
+    "mistral-tekken": TokenizerSpec(
+        id="mistral-tekken",
+        name="Mistral Tekken (131k Vocab)",
+        vocab_size=131072,
+        context_window=128000,
+        backend="transformers",
+        hf_path="mistralai/Mistral-Nemo-Instruct-2407",
+    ),
     "gemma-2": TokenizerSpec(
         id="gemma-2",
         name="Google Gemma 2 (256k Vocab)",
         vocab_size=256000,
         context_window=8192,
         backend="transformers",
-        hf_path="google/gemma-2-2b",
+        hf_path="unsloth/gemma-2-2b",
     ),
     "llama-3": TokenizerSpec(
         id="llama-3",
@@ -108,7 +127,7 @@ DEFAULT_SPECS: dict[str, TokenizerSpec] = {
         vocab_size=128256,
         context_window=128000,
         backend="transformers",
-        hf_path="meta-llama/Llama-3.1-8B",
+        hf_path="unsloth/Meta-Llama-3.1-8B",
     ),
     "mock": TokenizerSpec(
         id="mock",

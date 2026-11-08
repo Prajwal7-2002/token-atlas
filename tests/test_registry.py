@@ -6,9 +6,12 @@ from token_atlas.models import TokenizerSpec
 def test_registry_list_and_specs():
     reg = TokenizerRegistry()
     tokenizers = reg.list_tokenizers()
-    assert len(tokenizers) >= 5
+    assert len(tokenizers) >= 7
     ids = [t.id for t in tokenizers]
     assert "gpt-4o" in ids
+    assert "gpt-4" in ids
+    assert "deepseek-v3" in ids
+    assert "mistral-tekken" in ids
     assert "mock" in ids
 
 

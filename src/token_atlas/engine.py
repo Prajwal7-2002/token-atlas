@@ -45,6 +45,8 @@ def run_benchmark(
     tokenizer_ids: list[str],
     language_codes: list[str] | None = None,
     sample_limit: int | None = None,
+    custom_corpus: list[dict[str, str]] | None = None,
+    corpora_source: str | None = None,
     registry: TokenizerRegistry | None = None,
 ) -> BenchmarkReport:
     """Execute full cross-lingual benchmark across parallel sentences."""
@@ -55,7 +57,13 @@ def run_benchmark(
     if "en" not in langs:
         langs.insert(0, "en")
 
-    corpus = get_parallel_corpus(limit=sample_limit)
+    if custom_corpus is not None:
+        corpus = custom_corpus[:sample_limit] if sample_limit is not None else custom_corpus
+        source_name = corpora_source or "Custom User-Provided Corpus"
+    else:
+        corpus = get_parallel_corpus(limit=sample_limit)
+        source_name = corpora_source or "Meta FLORES-200 Parallel Corpus (Curated Subset)"
+
     benchmark_results: list[BenchmarkResult] = []
 
     for tid in tokenizer_ids:
@@ -114,7 +122,7 @@ def run_benchmark(
 
     return BenchmarkReport(
         timestamp=datetime.datetime.now(datetime.timezone.utc).isoformat(),
-        corpora_source="Meta FLORES-200 Parallel Corpus (Curated Subset)",
+        corpora_source=source_name,
         tokenizers=tokenizer_ids,
         languages=langs,
         results=benchmark_results,
