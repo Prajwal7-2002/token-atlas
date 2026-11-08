@@ -31,9 +31,12 @@ ENV/
 .coverage
 htmlcov/
 
-# Hugging Face Cache
+# Hugging Face Cache & Local Artifacts
 .cache/
 hf_cache/
+hf_dataset/
+hf_space/
+dist/
 
 # IDE & OS
 .vscode/
