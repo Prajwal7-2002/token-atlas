@@ -146,6 +146,11 @@ language:
   - tl
   - sw
   - yo
+configs:
+  - config_name: default
+    data_files:
+      - split: train
+        path: flores200_benchmark.csv
 ---
 
 # TokenAtlas: Multilingual Tokenizer Benchmark & Inflation Dataset
