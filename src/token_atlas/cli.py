@@ -328,5 +328,75 @@ def bench_domain(
         console.print(f"\n[bold green]✓ Benchmark report saved to {json_out}[/bold green]")
 
 
+@app.command("route")
+def route_cmd(
+    text: Optional[str] = typer.Option(None, "--text", "-t", help="Text/prompt to route"),
+    file: Optional[Path] = typer.Option(None, "--file", "-f", help="Path to text or prompt file"),
+    budget: str = typer.Option("balanced", "--budget", "-b", help="Budget tier: frugal, balanced, frontier"),
+):
+    """Recommend the optimal model/tokenizer based on language script and syntax inflation."""
+    from token_atlas.router import recommend_model
+    if not text and not file:
+        console.print("[bold red]Error: Either --text or --file must be specified.[/bold red]")
+        raise typer.Exit(1)
+    if file:
+        text = file.read_text(encoding="utf-8")
+
+    rec = recommend_model(text, budget_tier=budget)
+    console.print(Panel(rec.explanation, title="[bold cyan]Tokenizer-Aware Model Routing Decision[/bold cyan]"))
+
+    table = Table(title="[bold]Evaluated Candidate Models & Effective Costs[/bold]")
+    table.add_column("Model ID", style="bold green")
+    table.add_column("Headline $/1M", justify="right", style="cyan")
+    table.add_column("Est. Inflation", justify="right", style="yellow")
+    table.add_column("Effective $/1M", justify="right", style="bold magenta")
+    table.add_column("Tokens Est.", justify="right", style="white")
+    table.add_column("Key Profile / Strengths", style="dim white")
+
+    for c in rec.all_candidates:
+        style = "bold green" if c.model_id == rec.recommended_model else ""
+        table.add_row(
+            f"[{style}]{c.model_id}[/{style}]" if style else c.model_id,
+            f"${c.headline_price_per_1m:.2f}",
+            f"{c.estimated_inflation:.2f}x",
+            f"${c.effective_cost_per_1m:.2f}",
+            f"{c.tokens_estimated:,}",
+            c.strengths,
+        )
+    console.print(table)
+
+
+@app.command("minify")
+def minify_cmd(
+    text: Optional[str] = typer.Option(None, "--text", "-t", help="Text/prompt to minify"),
+    file: Optional[Path] = typer.Option(None, "--file", "-f", help="Path to text or prompt file"),
+    out: Optional[Path] = typer.Option(None, "--out", "-o", help="Optional output path to write minified text"),
+    tokenizer: str = typer.Option("gpt-4o", "--tokenizer", help="Tokenizer ID to calculate token savings"),
+):
+    """Losslessly compress prompt whitespace and embedded JSON schemas to cut token tax."""
+    from token_atlas.minify import minify_prompt
+    if not text and not file:
+        console.print("[bold red]Error: Either --text or --file must be specified.[/bold red]")
+        raise typer.Exit(1)
+    if file:
+        text = file.read_text(encoding="utf-8")
+
+    res = minify_prompt(text, tokenizer_id=tokenizer)
+
+    console.print(Panel(
+        f"Original: [cyan]{res.original_char_count}[/cyan] chars ([magenta]{res.original_tokens or '—'}[/magenta] tokens)\n"
+        f"Minified: [green]{res.minified_char_count}[/green] chars ([green]{res.minified_tokens or '—'}[/green] tokens)\n"
+        f"Tokens Saved: [bold yellow]{res.tokens_saved or 0}[/bold yellow] ([bold green]{res.token_reduction_pct or 0.0}% reduction[/bold green])",
+        title="[bold cyan]Prompt Token Minification Summary[/bold cyan]"
+    ))
+
+    if out:
+        out.write_text(res.minified_text, encoding="utf-8")
+        console.print(f"[bold green]✓ Minified prompt written to {out}[/bold green]")
+    else:
+        console.print("[bold dim]Minified Output Preview:[/bold dim]")
+        console.print(res.minified_text[:500] + ("..." if len(res.minified_text) > 500 else ""))
+
+
 if __name__ == "__main__":
     app()

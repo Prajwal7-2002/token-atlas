@@ -15,6 +15,9 @@ from token_atlas.metrics import (
     calculate_effective_context,
     calculate_cost_multiplier,
 )
+from token_atlas.router import recommend_model, ModelRecommendation
+from token_atlas.minify import minify_prompt, MinificationResult
+from token_atlas.domains import evaluate_domain, DomainBenchmarkReport
 
 __all__ = [
     "__version__",
@@ -26,4 +29,10 @@ __all__ = [
     "calculate_bytes_per_token",
     "calculate_effective_context",
     "calculate_cost_multiplier",
+    "recommend_model",
+    "ModelRecommendation",
+    "minify_prompt",
+    "MinificationResult",
+    "evaluate_domain",
+    "DomainBenchmarkReport",
 ]

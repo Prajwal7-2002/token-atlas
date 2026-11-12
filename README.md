@@ -49,7 +49,19 @@ token-atlas bench --tokenizers deepseek-v3,mistral-tekken --custom-corpus my_cor
 token-atlas compare --file document.txt --tokenizers gpt-4o,mistral-tekken --language kn
 ```
 
-### 4. Benchmark Multi-Domain Inflation (Code, Indentation, Tools, Math)
+### 4. Tokenizer-Aware Model Routing (Cut Effective Costs)
+```bash
+# Analyze prompt script and recommend the most token-efficient model
+token-atlas route --text "ದಯವಿಟ್ಟು ಈ ದಾಖಲೆಯನ್ನು ವಿಶ್ಲೇಷಿಸಿ ಮತ್ತು ಕನ್ನಡದಲ್ಲಿ ವರದಿ ನೀಡಿ"
+```
+
+### 5. Lossless Prompt Token Minification (Save 15-35% on Bills)
+```bash
+# Minify prompt whitespace and embedded JSON schemas before model dispatch
+token-atlas minify --file agent_prompt.txt --out minified_prompt.txt
+```
+
+### 6. Benchmark Multi-Domain Inflation (Code, Indentation, Tools, Math)
 ```bash
 # Benchmark tool-calling schema tax (verbose vs compact JSON)
 token-atlas bench-domain --domain tools --tokenizers gpt-4o,gpt-4
@@ -61,17 +73,33 @@ token-atlas bench-domain --domain indentation --tokenizers gpt-4o,gpt-4
 token-atlas bench-domain --domain code --tokenizers gpt-4o,gpt-4
 ```
 
-### 5. Diagnose UTF-8 Byte Fragmentation
+### 7. Diagnose UTF-8 Byte Fragmentation
 ```bash
 token-atlas explain-bytes --text "ಕನ್ನಡ"
 ```
 
-### 6. Export Standalone Interactive Web Atlas
+### 8. Python Production API
+```python
+from token_atlas import recommend_model, minify_prompt
+
+# 1. Route to the most cost-effective model for the detected script
+decision = recommend_model(
+    prompt="ದಯವಿಟ್ಟು ಈ ದಾಖಲೆಯನ್ನು ವಿಶ್ಲೇಷಿಸಿ...",
+    budget_tier="frugal"
+)
+print(f"Recommended: {decision.recommended_model} ({decision.savings_vs_worst} cheaper)")
+
+# 2. Minify prompt whitespace and embedded JSON losslessly
+minified = minify_prompt(raw_prompt)
+print(f"Saved {minified.tokens_saved} tokens ({minified.token_reduction_pct}% reduction)")
+```
+
+### 9. Export Standalone Interactive Web Atlas
 ```bash
 token-atlas export-web --out-dir docs/
 ```
 
-### 7. List Supported Tokenizers & Language Families
+### 10. List Supported Tokenizers & Language Families
 ```bash
 token-atlas list-tokenizers
 token-atlas list-tokenizers --category code
