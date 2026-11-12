@@ -26,7 +26,7 @@ def main():
         folder_path=str(space_dir),
         repo_id=space_id,
         repo_type="space",
-        commit_message="feat: publish TokenAtlas interactive web atlas v0.2.0",
+        commit_message="feat: publish TokenAtlas interactive web atlas v0.3.0",
     )
     print(f"✓ Space uploaded: https://huggingface.co/spaces/{space_id}")
 
