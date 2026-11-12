@@ -268,5 +268,65 @@ def explain_bytes_cmd(
     console.print(table)
 
 
+@app.command("bench-domain")
+def bench_domain(
+    domain: str = typer.Option("all", "--domain", "-d", help="Domain to benchmark: code, indentation, tools, math, or all"),
+    tokenizers: str = typer.Option("gpt-4o,gpt-4", "--tokenizers", "-t", help="Comma-separated tokenizer IDs"),
+    json_out: Optional[Path] = typer.Option(None, "--json-out", help="Path to export raw benchmark JSON"),
+):
+    """Benchmark multi-domain tokenization efficiency (Code, Indentation, Tool Calling, Math)."""
+    from token_atlas.domains import evaluate_domain
+    tok_list = [t.strip() for t in tokenizers.split(",") if t.strip()]
+
+    with console.status(f"[bold cyan]Evaluating domain '{domain}' across {len(tok_list)} tokenizers...[/bold cyan]"):
+        report = evaluate_domain(domain=domain, tokenizer_ids=tok_list)
+
+    table = Table(title=f"[bold cyan]Multi-Domain Tokenization Benchmark: {domain.upper()}[/bold cyan]")
+    table.add_column("Domain", style="magenta", no_wrap=True)
+    table.add_column("Sample / Task", style="white")
+    table.add_column("Tokenizer", style="bold green", no_wrap=True)
+    table.add_column("Tokens", justify="right", style="cyan", no_wrap=True)
+    table.add_column("Bytes", justify="right", style="dim", no_wrap=True)
+    table.add_column("BPT", justify="right", style="yellow", no_wrap=True)
+    table.add_column("Rel. Tax", justify="right", style="bold red", no_wrap=True)
+
+    for row in report.rows:
+        rel_style = "bold red" if row.relative_inflation > 1.25 else ("bold green" if row.relative_inflation < 0.95 else "white")
+        table.add_row(
+            row.domain.upper(),
+            row.sample_title,
+            row.tokenizer_id,
+            f"{row.token_count:,}",
+            f"{row.byte_count:,}",
+            f"{row.bytes_per_token:.2f}",
+            f"[{rel_style}]{row.relative_inflation:.2f}x[/{rel_style}]",
+        )
+    console.print(table)
+
+    if report.summary_metrics:
+        console.print()
+        if "indentation_tax_ratio" in report.summary_metrics:
+            summary_table = Table(title="[bold yellow]Indentation Tax Summary (4-Space vs Minified)[/bold yellow]")
+            summary_table.add_column("Tokenizer", style="bold green")
+            summary_table.add_column("Indentation Inflation Multiplier", style="bold red")
+            for tok, ratio in report.summary_metrics["indentation_tax_ratio"].items():
+                summary_table.add_row(tok, f"{ratio:.2f}x")
+            console.print(summary_table)
+
+        if "tool_schema_whitespace_tax" in report.summary_metrics:
+            summary_table = Table(title="[bold yellow]Tool-Calling Schema Spacing Tax (Verbose vs Compact)[/bold yellow]")
+            summary_table.add_column("Tokenizer", style="bold green")
+            summary_table.add_column("Schema Spacing Multiplier", style="bold red")
+            for tok, ratio in report.summary_metrics["tool_schema_whitespace_tax"].items():
+                summary_table.add_row(tok, f"{ratio:.2f}x")
+            console.print(summary_table)
+
+    if json_out:
+        json_out.parent.mkdir(parents=True, exist_ok=True)
+        with open(json_out, "w", encoding="utf-8") as f:
+            f.write(report.model_dump_json(indent=2))
+        console.print(f"\n[bold green]✓ Benchmark report saved to {json_out}[/bold green]")
+
+
 if __name__ == "__main__":
     app()

@@ -49,19 +49,32 @@ token-atlas bench --tokenizers deepseek-v3,mistral-tekken --custom-corpus my_cor
 token-atlas compare --file document.txt --tokenizers gpt-4o,mistral-tekken --language kn
 ```
 
-### 4. Diagnose UTF-8 Byte Fragmentation
+### 4. Benchmark Multi-Domain Inflation (Code, Indentation, Tools, Math)
+```bash
+# Benchmark tool-calling schema tax (verbose vs compact JSON)
+token-atlas bench-domain --domain tools --tokenizers gpt-4o,gpt-4
+
+# Benchmark indentation tax (4-space vs 2-space vs tabs vs minified)
+token-atlas bench-domain --domain indentation --tokenizers gpt-4o,gpt-4
+
+# Benchmark cross-language code syntax
+token-atlas bench-domain --domain code --tokenizers gpt-4o,gpt-4
+```
+
+### 5. Diagnose UTF-8 Byte Fragmentation
 ```bash
 token-atlas explain-bytes --text "ಕನ್ನಡ"
 ```
 
-### 5. Export Standalone Interactive Web Atlas
+### 6. Export Standalone Interactive Web Atlas
 ```bash
 token-atlas export-web --out-dir docs/
 ```
 
-### 6. List Supported Tokenizers & Language Families
+### 7. List Supported Tokenizers & Language Families
 ```bash
 token-atlas list-tokenizers
+token-atlas list-tokenizers --category code
 token-atlas list-languages
 ```
 
