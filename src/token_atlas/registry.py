@@ -1,6 +1,6 @@
 """Tokenizer Registry: Loads and manages frontier tokenizers with zero weight downloads."""
 
-from typing import Any, Protocol
+from typing import Any, Optional, Protocol
 import tiktoken
 from token_atlas.models import TokenizerSpec, TokenizationResult
 from token_atlas.metrics import calculate_bytes_per_token
@@ -80,6 +80,8 @@ DEFAULT_SPECS: dict[str, TokenizerSpec] = {
         context_window=128000,
         backend="tiktoken",
         tiktoken_encoding="o200k_base",
+        category="multilingual",
+        notes="Frontier 200k multilingual Tiktoken with native Indic/CJK tokens",
     ),
     "gpt-4": TokenizerSpec(
         id="gpt-4",
@@ -88,6 +90,8 @@ DEFAULT_SPECS: dict[str, TokenizerSpec] = {
         context_window=128000,
         backend="tiktoken",
         tiktoken_encoding="cl100k_base",
+        category="general",
+        notes="Legacy English-biased baseline; severe byte fallback on non-Latin scripts",
     ),
     "qwen2.5": TokenizerSpec(
         id="qwen2.5",
@@ -96,6 +100,18 @@ DEFAULT_SPECS: dict[str, TokenizerSpec] = {
         context_window=131072,
         backend="transformers",
         hf_path="Qwen/Qwen2.5-7B",
+        category="multilingual",
+        notes="High-capacity multilingual Byte BPE with strong Asian & CJK compression",
+    ),
+    "qwen2.5-coder": TokenizerSpec(
+        id="qwen2.5-coder",
+        name="Qwen2.5-Coder (152k Vocab)",
+        vocab_size=152064,
+        context_window=131072,
+        backend="transformers",
+        hf_path="Qwen/Qwen2.5-Coder-7B",
+        category="code",
+        notes="Code-specialized merges for syntax, multi-space indentation, and repo paths",
     ),
     "deepseek-v3": TokenizerSpec(
         id="deepseek-v3",
@@ -104,6 +120,18 @@ DEFAULT_SPECS: dict[str, TokenizerSpec] = {
         context_window=128000,
         backend="transformers",
         hf_path="deepseek-ai/DeepSeek-V3",
+        category="reasoning",
+        notes="Sinitic-first Byte BPE with extreme Chinese compression (tau ≈ 0.98x)",
+    ),
+    "deepseek-r1": TokenizerSpec(
+        id="deepseek-r1",
+        name="DeepSeek-R1 (128k Vocab)",
+        vocab_size=128815,
+        context_window=128000,
+        backend="transformers",
+        hf_path="deepseek-ai/DeepSeek-R1",
+        category="reasoning",
+        notes="Frontier open reasoning tokenizer for dense long-form thinking traces",
     ),
     "mistral-tekken": TokenizerSpec(
         id="mistral-tekken",
@@ -112,6 +140,18 @@ DEFAULT_SPECS: dict[str, TokenizerSpec] = {
         context_window=128000,
         backend="transformers",
         hf_path="mistralai/Mistral-Nemo-Instruct-2407",
+        category="multilingual",
+        notes="Balanced multilingual BPE with superior European and Indic byte packing",
+    ),
+    "cohere-aya": TokenizerSpec(
+        id="cohere-aya",
+        name="Cohere Aya Expanse (256k Vocab)",
+        vocab_size=256000,
+        context_window=128000,
+        backend="transformers",
+        hf_path="CohereForAI/aya-expanse-8b",
+        category="multilingual",
+        notes="Engineered specifically for 101 global languages with massive Dravidian & African subwords",
     ),
     "gemma-2": TokenizerSpec(
         id="gemma-2",
@@ -120,6 +160,8 @@ DEFAULT_SPECS: dict[str, TokenizerSpec] = {
         context_window=8192,
         backend="transformers",
         hf_path="unsloth/gemma-2-2b",
+        category="general",
+        notes="Massive 256k SentencePiece vocabulary with high memory embedding footprint",
     ),
     "llama-3": TokenizerSpec(
         id="llama-3",
@@ -128,6 +170,28 @@ DEFAULT_SPECS: dict[str, TokenizerSpec] = {
         context_window=128000,
         backend="transformers",
         hf_path="unsloth/Meta-Llama-3.1-8B",
+        category="general",
+        notes="Latin-first Tiktoken BPE; high inflation penalty on Indic and African scripts",
+    ),
+    "llama-3.2": TokenizerSpec(
+        id="llama-3.2",
+        name="Meta Llama 3.2 (128k Vocab, SLM)",
+        vocab_size=128256,
+        context_window=128000,
+        backend="transformers",
+        hf_path="unsloth/Llama-3.2-1B",
+        category="slm",
+        notes="Edge-optimized compact SLM tokenizer sharing Llama-3.1 vocabulary layout",
+    ),
+    "smollm2": TokenizerSpec(
+        id="smollm2",
+        name="HuggingFace SmolLM2 (49k Vocab, SLM)",
+        vocab_size=49152,
+        context_window=8192,
+        backend="transformers",
+        hf_path="HuggingFaceTB/SmolLM2-1.7B",
+        category="slm",
+        notes="Ultra-compact 49k vocabulary minimizing embedding memory for on-device deployment",
     ),
     "mock": TokenizerSpec(
         id="mock",
@@ -135,6 +199,8 @@ DEFAULT_SPECS: dict[str, TokenizerSpec] = {
         vocab_size=50000,
         context_window=32768,
         backend="mock",
+        category="general",
+        notes="Offline test baseline generating deterministic token IDs with zero dependencies",
     ),
 }
 
@@ -158,8 +224,12 @@ class TokenizerRegistry:
             )
         return self._specs[tokenizer_id]
 
-    def list_tokenizers(self) -> list[TokenizerSpec]:
-        return list(self._specs.values())
+    def list_tokenizers(self, category: Optional[str] = None) -> list[TokenizerSpec]:
+        specs = list(self._specs.values())
+        if category:
+            cat = category.strip().lower()
+            specs = [s for s in specs if s.category.lower() == cat]
+        return specs
 
     def get_tokenizer(self, tokenizer_id: str) -> TokenizerProtocol:
         if tokenizer_id in self._instances:

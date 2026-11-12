@@ -42,23 +42,32 @@ def main():
 
 
 @app.command("list-tokenizers")
-def list_tokenizers():
+def list_tokenizers(
+    category: Optional[str] = typer.Option(
+        None, "--category", "-c", help="Filter by category (general, multilingual, code, reasoning, slm)"
+    )
+):
     """List all supported frontier tokenizer architectures and metadata."""
     reg = TokenizerRegistry()
-    table = Table(title="[bold cyan]Supported Tokenizers in TokenAtlas[/bold cyan]")
-    table.add_column("ID", style="bold green")
+    title_suffix = f" (Category: {category})" if category else ""
+    table = Table(title=f"[bold cyan]Supported Tokenizers in TokenAtlas{title_suffix}[/bold cyan]")
+    table.add_column("ID", style="bold green", no_wrap=True)
     table.add_column("Display Name", style="white")
-    table.add_column("Vocab Size", justify="right", style="cyan")
-    table.add_column("Context Window", justify="right", style="magenta")
-    table.add_column("Backend", style="yellow")
+    table.add_column("Category", style="blue", no_wrap=True)
+    table.add_column("Vocab Size", justify="right", style="cyan", no_wrap=True)
+    table.add_column("Context Window", justify="right", style="magenta", no_wrap=True)
+    table.add_column("Backend", style="yellow", no_wrap=True)
+    table.add_column("Key Strengths & Compression Profile", style="dim white")
 
-    for spec in reg.list_tokenizers():
+    for spec in reg.list_tokenizers(category=category):
         table.add_row(
             spec.id,
             spec.name,
+            spec.category.upper(),
             f"{spec.vocab_size:,}",
             f"{spec.context_window:,} tok",
             spec.backend,
+            spec.notes or "—",
         )
     console.print(table)
 

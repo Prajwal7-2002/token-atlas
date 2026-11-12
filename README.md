@@ -99,15 +99,19 @@ TokenAtlas rigorously evaluates 4 dimensions on identical parallel sentences:
 
 ## 🔬 Evaluated Frontier Tokenizers
 
-| Tokenizer | Vocab Size | Context Limit | Target Architecture |
-| :--- | :---: | :---: | :--- |
-| **OpenAI GPT-4o** (`o200k_base`) | 200,000 | 128,000 | Frontier Multilingual Tiktoken |
-| **Mistral Tekken** | 131,072 | 128,000 | Balanced Multilingual BPE (`Mistral-Nemo-Instruct-2407`) |
-| **Google Gemma 2** | 256,000 | 8,192 | Ultra-large Vocab SentencePiece |
-| **DeepSeek-V3** | 128,815 | 128,000 | Sinitic-first Byte BPE ($\tau = 0.98\times$ on Chinese) |
-| **Qwen 2.5** | 152,064 | 131,072 | Multilingual Byte BPE |
-| **Meta Llama 3.1** | 128,256 | 128,000 | Latin-first Tiktoken BPE |
-| **OpenAI GPT-4** (`cl100k_base`) | 100,277 | 128,000 | English-biased Baseline Tiktoken |
+| Tokenizer | Vocab Size | Context Limit | Category | Target Architecture & Focus |
+| :--- | :---: | :---: | :---: | :--- |
+| **OpenAI GPT-4o** (`o200k_base`) | 200,000 | 128,000 | Multilingual | Frontier Multilingual Tiktoken |
+| **Mistral Tekken** | 131,072 | 128,000 | Multilingual | Balanced Multilingual BPE (`Mistral-Nemo-Instruct-2407`) |
+| **Cohere Aya Expanse** | 256,000 | 128,000 | Multilingual | 101-Language Global Tokenizer with massive Dravidian/African merges |
+| **DeepSeek-R1 & V3** | 128,815 | 128,000 | Reasoning | Sinitic-first Byte BPE ($\tau = 0.98\times$ on Chinese) & Reasoning |
+| **Qwen 2.5** | 152,064 | 131,072 | Multilingual | High-capacity Asian & Multilingual Byte BPE |
+| **Qwen 2.5 Coder** | 152,064 | 131,072 | Code | Specialized syntax, indentation, and repo path compression |
+| **Google Gemma 2** | 256,000 | 8,192 | General | Ultra-large Vocab SentencePiece |
+| **Meta Llama 3.1** | 128,256 | 128,000 | General | Latin-first Tiktoken BPE |
+| **Meta Llama 3.2** | 128,256 | 128,000 | SLM | Edge-optimized Latin-first BPE |
+| **HuggingFace SmolLM2** | 49,152 | 8,192 | SLM | Ultra-compact 49k vocabulary minimizing embedding memory |
+| **OpenAI GPT-4** (`cl100k_base`) | 100,277 | 128,000 | General | English-biased Baseline Tiktoken |
 
 ---
 

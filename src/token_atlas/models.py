@@ -11,6 +11,8 @@ class TokenizerSpec(BaseModel):
     backend: Literal["tiktoken", "transformers", "mock"] = Field(..., description="Loader backend")
     hf_path: Optional[str] = Field(None, description="Hugging Face hub repo ID")
     tiktoken_encoding: Optional[str] = Field(None, description="Tiktoken encoding name if applicable")
+    category: str = Field("general", description="Category: general, multilingual, code, reasoning, slm")
+    notes: Optional[str] = Field(None, description="Architectural characteristics, compression profile, and strengths")
 
 
 class TokenizationResult(BaseModel):

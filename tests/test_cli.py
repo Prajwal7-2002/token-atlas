@@ -14,7 +14,15 @@ def test_cli_list_tokenizers():
     result = runner.invoke(app, ["list-tokenizers"])
     assert result.exit_code == 0
     assert "gpt-4o" in result.output
+    assert "qwen2.5-coder" in result.output
+    assert "deepseek-r1" in result.output
     assert "mock" in result.output
+
+    # Test filtering by category
+    code_res = runner.invoke(app, ["list-tokenizers", "--category", "code"])
+    assert code_res.exit_code == 0
+    assert "qwen2.5-coder" in code_res.output
+    assert "gpt-4o" not in code_res.output
 
 
 def test_cli_list_languages():
