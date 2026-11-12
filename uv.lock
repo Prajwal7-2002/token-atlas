@@ -971,7 +971,7 @@ wheels = [
 ]
 
 [[package]]
-name = "token-atlas"
+name = "token-atlas-engine"
 version = "0.3.0"
 source = { editable = "." }
 dependencies = [

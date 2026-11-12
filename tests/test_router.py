@@ -64,3 +64,4 @@ def test_cli_route_command():
     assert result.exit_code == 0
     assert "Tokenizer-Aware Model Routing Decision" in result.output
     assert "LATIN" in result.output
+

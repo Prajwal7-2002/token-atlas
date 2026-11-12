@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/token-atlas
+      url: https://pypi.org/p/token-atlas-engine
     permissions:
       id-token: write
     steps:
@@ -41,3 +41,4 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           skip-existing: true
+

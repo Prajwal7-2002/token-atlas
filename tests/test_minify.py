@@ -64,3 +64,4 @@ def test_cli_minify_command(tmp_path):
     assert "Prompt Token Minification Summary" in result.output
     assert out_file.exists()
     assert "\n\n\n" not in out_file.read_text(encoding="utf-8")
+

@@ -2,7 +2,7 @@
 
 > **Universal Multilingual Tokenizer Benchmark & Global Inflation Atlas**
 
-[![PyPI](https://img.shields.io/pypi/v/token-atlas.svg?color=blue)](https://pypi.org/project/token-atlas/)
+[![PyPI](https://img.shields.io/pypi/v/token-atlas-engine.svg?color=blue)](https://pypi.org/project/token-atlas-engine/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![CI](https://github.com/Prajwal7-2002/token-atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/Prajwal7-2002/token-atlas/actions)
@@ -27,7 +27,7 @@ This creates 4 compounding penalties for international users:
 
 ### Installation
 ```bash
-pip install token-atlas
+pip install token-atlas-engine
 ```
 
 ### 1. Compare Tokenizers on Single String
