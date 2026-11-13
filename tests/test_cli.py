@@ -121,3 +121,36 @@ def test_cli_export_web(tmp_path):
     content = (web_dir / "index.html").read_text(encoding="utf-8")
     assert "TokenAtlas" in content
     assert "Live Token Tax" in content
+
+
+def test_cli_bench_csv_out(tmp_path):
+    csv_file = tmp_path / "bench.csv"
+    res = runner.invoke(app, [
+        "bench",
+        "--tokenizers", "mock",
+        "--languages", "en,de",
+        "--samples", "1",
+        "--csv-out", str(csv_file),
+    ])
+    assert res.exit_code == 0
+    assert csv_file.exists()
+    content = csv_file.read_text(encoding="utf-8")
+    assert "tokenizer_id,tokenizer_name,vocab_size" in content
+    assert "mock" in content
+
+
+def test_cli_export_csv(tmp_path):
+    out_file = tmp_path / "direct_export.csv"
+    res = runner.invoke(app, [
+        "export-csv",
+        "--tokenizers", "mock",
+        "--languages", "en,kn",
+        "--samples", "1",
+        "--output", str(out_file),
+    ])
+    assert res.exit_code == 0
+    assert out_file.exists()
+    content = out_file.read_text(encoding="utf-8")
+    assert "inflation_index" in content
+    assert "mock" in content
+
