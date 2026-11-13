@@ -138,6 +138,7 @@ def bench_cmd(
     custom_corpus: Optional[Path] = typer.Option(None, "--custom-corpus", help="Path to JSON file containing list of parallel sentence dicts"),
     json_out: Optional[Path] = typer.Option(None, "--json-out", help="Path to export raw JSON report"),
     md_out: Optional[Path] = typer.Option(None, "--md-out", help="Path to export markdown summary"),
+    csv_out: Optional[Path] = typer.Option(None, "--csv-out", help="Path to export tabular CSV benchmark data"),
 ):
     """Run cross-lingual benchmark across parallel sentences and compute inflation indices."""
     tids = [t.strip() for t in tokenizers.split(",") if t.strip()]
@@ -213,6 +214,61 @@ def bench_cmd(
                     f.write(f"| {m.language_name} | `{m.language_code}` | {m.family} | {m.token_count:,} | **{m.inflation_index:.2f}x** | {m.effective_context:,} | {m.cost_multiplier:.2f}x | {m.bytes_per_token:.2f} |\n")
                 f.write("\n")
         console.print(f"[bold green]✓ Exported Markdown summary to {md_out}[/bold green]")
+
+    if csv_out:
+        import csv
+
+        csv_out.parent.mkdir(parents=True, exist_ok=True)
+        with open(csv_out, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow([
+                "tokenizer_id",
+                "tokenizer_name",
+                "vocab_size",
+                "language_code",
+                "language_name",
+                "family",
+                "token_count",
+                "inflation_index",
+                "effective_context",
+                "cost_multiplier",
+                "bytes_per_token",
+            ])
+            for bench in report.results:
+                for m in bench.metrics.values():
+                    writer.writerow([
+                        bench.tokenizer_id,
+                        bench.tokenizer_name,
+                        bench.vocab_size,
+                        m.language_code,
+                        m.language_name,
+                        m.family,
+                        m.token_count,
+                        round(m.inflation_index, 4),
+                        m.effective_context,
+                        round(m.cost_multiplier, 4),
+                        round(m.bytes_per_token, 4),
+                    ])
+        console.print(f"[bold green]✓ Exported CSV report to {csv_out}[/bold green]")
+
+
+@app.command("export-csv")
+def export_csv_cmd(
+    output: Path = typer.Option(Path("token_atlas_benchmark.csv"), "--output", "-o", help="Output CSV file path"),
+    tokenizers: str = typer.Option("mock", "--tokenizers", "-m", help="Comma-separated tokenizer IDs"),
+    languages: str = typer.Option("en,kn,hi,zh,es", "--languages", "-l", help="Comma-separated language codes or 'all'"),
+    samples: int = typer.Option(3, "--samples", "-n", help="Parallel sentences per language"),
+):
+    """Export multilingual tokenizer benchmark metrics directly to CSV format."""
+    bench_cmd(
+        tokenizers=tokenizers,
+        languages=languages,
+        samples=samples,
+        custom_corpus=None,
+        json_out=None,
+        md_out=None,
+        csv_out=output,
+    )
 
 
 @app.command("export-web")
